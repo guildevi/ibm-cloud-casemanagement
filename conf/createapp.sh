@@ -6,6 +6,7 @@
 . conf/createcommon.sh
 
 ic_ce_component=app
+ic_ce_app=${ic_ce_module}-${ic_ce_component}
 ic_cr_image=${ic_cr_image}-${ic_ce_component}
 ic_ce_build=${ic_ce_build}-${ic_ce_component}
 ic_ce_dockerfile=${ic_ce_component}/Dockerfile

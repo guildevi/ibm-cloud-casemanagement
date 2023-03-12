@@ -6,8 +6,8 @@ RUN apk add coreutils
 RUN mkdir app
 WORKDIR app
 
-COPY *.sh .
-RUN chmod +x *.sh
+COPY job/*.sh .
 RUN ls -la
+RUN chmod +x *.sh
 
 CMD ./addUserToCaseWatchlist.sh
