@@ -2,6 +2,8 @@
 
 createupdate()
 {
+    echo ----------------------------------------------------
+   echo ----------------------------------------------------
     component=$1
     name=$2
     parameters=$3
@@ -31,6 +33,33 @@ createupdate()
         fi
     fi
     bx ${component} get --name ${name}
+}
+
+submit()
+{
+    echo ----------------------------------------------------
+    echo ----------------------------------------------------
+   component=$1
+    name=$2
+    parameters=$3
+    instance=${name}$(date "+-%Y%m%d-%H%M%S")
+    echo bx ce ${component}run submit --name ${instance} --${component} ${name} ${parameters}
+    bx ce ${component}run submit --name ${instance} --${component} ${name} ${parameters}
+    if [ $? -eq 0 ]
+    then
+        echo SUCCESSFULLY SUBMITTED ${component} ${name}
+        bx ce ${component}run get --name ${instance}
+        if [ $? -eq 0 ]
+        then
+            echo SUCCESSFULLY GOT ${component}run ${name}
+        else
+            echo FAILED TO GET ${component}run ${name}
+            exit 1
+        fi
+    else
+        echo FAILED SUBMITTING ${component}run ${name}
+        exit 1
+    fi
 }
 
 #bx ce registry create --name ${ic_ce_registry} --server ${ic_ce_registry_server} --username iamapikey --password ${ic_ce_registry_password} --email ${ic_ce_registry_email}

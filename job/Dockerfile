@@ -6,7 +6,7 @@ RUN apk add coreutils
 RUN mkdir app
 WORKDIR app
 
-COPY job/*.sh .
+COPY *.sh .
 RUN ls -la
 RUN chmod +x *.sh
 
