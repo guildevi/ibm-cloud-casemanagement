@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bx login
+bx login -r ${ibmcloud_region}
 if [ $? -eq 0 ]
 then
     echo LOGIN SUCCESSFUL

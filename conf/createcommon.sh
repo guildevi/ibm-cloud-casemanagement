@@ -3,16 +3,16 @@
 createupdate()
 {
     echo ----------------------------------------------------
-   echo ----------------------------------------------------
+    echo ----------------------------------------------------
     component=$1
     name=$2
     parameters=$3
-    echo ${component} ACTION --name ${name} ${parameters}
-    bx ${component} list | grep ${name}
+    echo ibmcloud ${component} ACTION --name ${name} ${parameters}
+    bx ce ${component} list | grep ${name}
     if [ $? -ne 0 ]
     then
         echo ${component} ${name} DOES NOT EXIST
-        bx ${component} create --name ${name} ${parameters}
+        bx ce ${component} create --name ${name} ${parameters}
         if [ $? -eq 0 ]
         then
             echo CREATED ${component} ${name}
@@ -22,8 +22,8 @@ createupdate()
         fi
     else
         echo ${component} ${name} EXISTS
-        echo bx ${component} update --name ${name} ${parameters}
-        bx ${component} update --name ${name} ${parameters}
+        echo bx ce ${component} update --name ${name} ${parameters}
+        bx ce ${component} update --name ${name} ${parameters}
         if [ $? -eq 0 ]
         then
             echo UPDATED ${component} ${name}
@@ -32,14 +32,14 @@ createupdate()
             exit 1
         fi
     fi
-    bx ${component} get --name ${name}
+    bx ce ${component} get --name ${name}
 }
 
 submit()
 {
     echo ----------------------------------------------------
     echo ----------------------------------------------------
-   component=$1
+    component=$1
     name=$2
     parameters=$3
     instance=${name}$(date "+-%Y%m%d-%H%M%S")
@@ -56,6 +56,14 @@ submit()
             echo FAILED TO GET ${component}run ${name}
             exit 1
         fi
+        bx ce ${component}run logs --name ${instance}
+        if [ $? -eq 0 ]
+        then
+            echo SUCCESSFULLY DISPLAYED ${component}run ${name}
+        else
+            echo FAILED TO DISPLAY ${component}run ${name}
+            exit 1
+        fi
     else
         echo FAILED SUBMITTING ${component}run ${name}
         exit 1
@@ -66,6 +74,6 @@ submit()
 
 #createupdate "ce repo" ${ic_ce_repo} "--host ${git_host} --key-path ${git_key_path}"
 
-createupdate "ce configmap" ${ic_ce_configmap} "--name ${ic_ce_configmap} --from-env-file ${ic_ce_configmap_file}"
+createupdate "configmap" ${ic_ce_configmap} "--name ${ic_ce_configmap} --from-env-file ${ic_ce_configmap_file}"
 
-createupdate "ce secret" ${ic_ce_secret} "--from-env-file ${ic_ce_secret_file}"
+createupdate "secret" ${ic_ce_secret} "--from-env-file ${ic_ce_secret_file}"
