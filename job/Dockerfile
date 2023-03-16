@@ -1,4 +1,4 @@
-FROM alpine
+FROM icr.io/ibm/alpine
 
 RUN apk add curl
 RUN apk add coreutils

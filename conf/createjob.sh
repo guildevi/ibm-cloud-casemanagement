@@ -1,9 +1,5 @@
 #!/bin/bash
-
-. conf/.profile
-
-. conf/logintarget.sh
-. conf/createcommon.sh
+. $(dirname $0)/profile.sh
 
 ic_ce_component=job
 ic_ce_dockerfile=${ic_ce_component}/Dockerfile
@@ -15,7 +11,6 @@ ic_ce_cron=${ic_cemodule}"-cron"
 set -f
 ic_ce_cron_schedule="'*/15 * * * *'"
 set +f
-
 
 #createupdate "ce build" ${ic_ce_build} "--git-repo-secret ${ic_ce_repo} --image ${ic_cr_image} -size small --source ${git_url}"
 createupdate "build" ${ic_ce_build} "-size small --source ${git_url} --image ${ic_cr_image} --dockerfile ${ic_ce_dockerfile}"
